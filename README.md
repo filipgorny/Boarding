@@ -12,10 +12,17 @@ Process of getting boarding legs:
 1. Initialize the Api Gateway object.
 
 ```php
-$api = new Boarding\Api(new FromArray(), new Bubble());
-```
 
-Note you can change the injected factory and strategy, see the documentation of Api constructor method.
+// configure the factory services
+$vehicleFactory = new NamesHashFactory();
+$vehicleFactory->registerVehicleType('flight', 'Boarding\\Vehicle\\Flight');
+$vehicleFactory->registerVehicleType('train', 'Boarding\\Vehicle\\Train');
+$vehicleFactory->registerVehicleType('airport bus', 'Boarding\\Vehicle\\AirportBus');
+
+// initialize the api with factories and sorting strategy
+$api = new Boarding\Api(new FromArray($vehicleFactory), new QuickSortTopological());
+
+```
 
 2. Create the new boarding cards stack instance
 

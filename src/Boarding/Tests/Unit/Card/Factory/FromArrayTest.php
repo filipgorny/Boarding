@@ -4,6 +4,7 @@ namespace Boarding\Tests\Unit\Card\Factory;
 
 use Boarding\Card\Factory\FromArray;
 use Boarding\Card\Vehicle;
+use Boarding\Vehicle\Flight;
 
 /**
  * Class FromArrayTest
@@ -25,7 +26,9 @@ class FromArrayTest extends \PHPUnit_Framework_TestCase
             ]
         ];
 
-        $fromArrayFactory = new FromArray();
+        $vehicleFactoryMock = $this->getMock('Boarding\Vehicle\Factory\VehicleFactoryInterface');
+
+        $fromArrayFactory = new FromArray($vehicleFactoryMock);
 
         $card = $fromArrayFactory->createCard($data);
 
@@ -46,7 +49,12 @@ class FromArrayTest extends \PHPUnit_Framework_TestCase
             ]
         ];
 
-        $fromArrayFactory = new FromArray();
+        $vehicleFactoryMock = $this->getMock('Boarding\Vehicle\Factory\VehicleFactoryInterface');
+        $vehicleFactoryMock->expects($this->any())
+            ->method('initialize')
+            ->will($this->returnValue(new Flight('123')));
+
+        $fromArrayFactory = new FromArray($vehicleFactoryMock);
 
         $card = $fromArrayFactory->createCard($data);
 
@@ -55,8 +63,8 @@ class FromArrayTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Stockholm', $card->getFrom());
         $this->assertEquals('New York JFK', $card->getTo());
         $this->assertEquals('7B', $card->getSeat());
-        $this->assertInstanceOf('Boarding\Card\Vehicle', $card->getVehicle());
-        $this->assertEquals(Vehicle::TYPE_FLIGHT, $card->getVehicle()->getType());
+        $this->assertInstanceOf('Boarding\Vehicle\AbstractVehicle', $card->getVehicle());
+        $this->assertEquals('flight', $card->getVehicle()->getName());
         $this->assertEquals($data['additionalInfo']['gate'], $card->getAdditionalInfo('gate'));
         $this->assertEquals($data['additionalInfo']['note'], $card->getAdditionalInfo('note'));
     }

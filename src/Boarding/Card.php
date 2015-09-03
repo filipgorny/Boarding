@@ -1,7 +1,8 @@
 <?php
 
 namespace Boarding;
-use Boarding\Card\Vehicle;
+
+use Boarding\Vehicle\AbstractVehicle;
 
 /**
  * Class Card
@@ -25,7 +26,7 @@ class Card
     private $seat;
 
     /**
-     * @var Vehicle
+     * @var AbstractVehicle
      */
     private $vehicle;
 
@@ -39,9 +40,9 @@ class Card
      * @param string $from
      * @param string $to
      * @param string $seat
-     * @param Vehicle $vehicle
+     * @param AbstractVehicle $vehicle
      */
-    public function __construct($from = null, $to = null, $seat = null, Vehicle $vehicle = null)
+    public function __construct($from = null, $to = null, $seat = null, AbstractVehicle $vehicle = null)
     {
         $this->from = $from;
         $this->to = $to;
@@ -98,7 +99,7 @@ class Card
     }
 
     /**
-     * @return Vehicle
+     * @return AbstractVehicle
      */
     public function getVehicle()
     {
@@ -106,7 +107,7 @@ class Card
     }
 
     /**
-     * @param Vehicle $vehicle
+     * @param AbstractVehicle $vehicle
      */
     public function setVehicle($vehicle)
     {

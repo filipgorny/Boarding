@@ -5,6 +5,8 @@ namespace Boarding\Card\Factory;
 use Boarding\Card;
 use Boarding\Card\Factory\Exception\InvalidCardInputException;
 use Boarding\Card\Vehicle;
+use Boarding\Vehicle\AbstractVehicle;
+use Boarding\Vehicle\Factory\VehicleFactoryInterface;
 
 class FromArray implements CardFactoryInterface
 {
@@ -15,6 +17,19 @@ class FromArray implements CardFactoryInterface
         'type',
         //'vehicleIdentifier',
     ];
+
+    /**
+     * @var VehicleFactoryInterface
+     */
+    private $vehicleFactory;
+
+    /**
+     * @param VehicleFactoryInterface $vehicleFactory
+     */
+    public function __construct(VehicleFactoryInterface $vehicleFactory)
+    {
+        $this->vehicleFactory = $vehicleFactory;
+    }
 
     /**
      * @param $data
@@ -33,11 +48,9 @@ class FromArray implements CardFactoryInterface
         isset($data['seat']) and $card->setSeat($data['seat']);
 
         try {
-            $vehicle = new Vehicle(Vehicle::translateTypeString($data['type']), isset($data['vehicleIdentifier']) ? $data['vehicleIdentifier'] : null);
-
-            $card->setVehicle($vehicle);
+            $card->setVehicle($this->vehicleFactory->initialize($data['type'], isset($data['vehicleIdentifier']) ? $data['vehicleIdentifier'] : null));
         } catch (\OutOfBoundsException $e) {
-            throw new InvalidCardInputException('Cannot create vehicle instance ('.$e->getMessage().').');
+            throw new InvalidCardInputException('Vehicle type not registered: '.$data['type']);
         }
 
         if (isset($data['additionalInfo'])) {

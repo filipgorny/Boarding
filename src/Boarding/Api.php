@@ -5,6 +5,7 @@ namespace Boarding;
 use Boarding\Card\Factory\CardFactoryInterface;
 use Boarding\Card\Stack;
 use Boarding\Route\PathFinding\PathFindingStrategyInterface;
+use Boarding\Vehicle\Factory\VehicleFactoryInterface;
 
 /**
  * Class Api
@@ -26,8 +27,10 @@ class Api
      * @param CardFactoryInterface $cardFactory
      * @param PathFindingStrategyInterface $pathFindingStrategy
      */
-    public function __construct(CardFactoryInterface $cardFactory, PathFindingStrategyInterface $pathFindingStrategy)
-    {
+    public function __construct(
+        CardFactoryInterface $cardFactory,
+        PathFindingStrategyInterface $pathFindingStrategy
+    ) {
         $this->cardFactory = $cardFactory;
         $this->pathFindingStrategy = $pathFindingStrategy;
     }

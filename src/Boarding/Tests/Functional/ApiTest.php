@@ -6,6 +6,8 @@ use Boarding\Api;
 use Boarding\Card\Factory\FromArray;
 use Boarding\Card\Vehicle;
 use Boarding\Route\PathFinding\Bubble;
+use Boarding\Route\PathFinding\QuickSortTopological;
+use Boarding\Vehicle\Factory\NamesHashFactory;
 
 class ApiTest extends \PHPUnit_Framework_TestCase
 {
@@ -50,7 +52,14 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testCreatesValidStack()
     {
-        $api = new Api(new FromArray(), new Bubble());
+        $vehicleFactory = new NamesHashFactory();
+        $vehicleFactory->registerVehicleType('flight', 'Boarding\\Vehicle\\Flight');
+        $vehicleFactory->registerVehicleType('train', 'Boarding\\Vehicle\\Train');
+        $vehicleFactory->registerVehicleType('airport bus', 'Boarding\\Vehicle\\AirportBus');
+
+        $api = new Api(new FromArray($vehicleFactory), new QuickSortTopological());
+
+
         $stack = $api->createStack($this->cardsArray);
 
         $this->assertInstanceOf('Boarding\Card\Stack', $stack, 'Api did not create a stack.');
@@ -75,7 +84,12 @@ class ApiTest extends \PHPUnit_Framework_TestCase
             You have arrived at your final destination.
          */
 
-        $api = new Api(new FromArray(), new Bubble());
+        $vehicleFactory = new NamesHashFactory();
+        $vehicleFactory->registerVehicleType('flight', 'Boarding\\Vehicle\\Flight');
+        $vehicleFactory->registerVehicleType('train', 'Boarding\\Vehicle\\Train');
+        $vehicleFactory->registerVehicleType('airport bus', 'Boarding\\Vehicle\\AirportBus');
+
+        $api = new Api(new FromArray($vehicleFactory), new QuickSortTopological());
 
         $stack = $api->createStack($this->cardsArray);
 
