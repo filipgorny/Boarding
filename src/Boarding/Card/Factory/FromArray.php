@@ -48,7 +48,13 @@ class FromArray implements CardFactoryInterface
         isset($data['seat']) and $card->setSeat($data['seat']);
 
         try {
-            $card->setVehicle($this->vehicleFactory->initialize($data['type'], isset($data['vehicleIdentifier']) ? $data['vehicleIdentifier'] : null));
+            $vehicle = $this->vehicleFactory->initialize($data['type'], isset($data['vehicleIdentifier']) ? $data['vehicleIdentifier'] : null);
+
+            if (!$vehicle instanceof AbstractVehicle) {
+                throw new InvalidCardInputException('Vehicle type not registered: '.$data['type']);
+            }
+
+            $card->setVehicle($vehicle);
         } catch (\OutOfBoundsException $e) {
             throw new InvalidCardInputException('Vehicle type not registered: '.$data['type']);
         }

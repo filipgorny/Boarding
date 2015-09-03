@@ -107,18 +107,31 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         ];
 
         foreach ($manuallySortedListOfCards as $index => $data) {
-            $leg = array_shift($route);
+            $leg = $route[$index];
+
             $this->assertInstanceOf('Boarding\Route\Leg', $leg);
 
-            $card = $leg->getCard();
+            $this->assertEquals(
+                $data['from'],
+                $leg->getFrom(),
+                'Route from does not match, '
+                .$data['from']
+                .' - '
+                .$data['to']
+                .' corresponding to '
+                .$leg->getFrom()
+                .' - '.$leg->getTo()
+            );
 
-            $this->assertEquals($data['from'], $card->getFrom());
-            $this->assertEquals($data['to'], $card->getTo());
-            $this->assertEquals($data['seat'], $card->getSeat());
-            $this->assertInstanceOf('Boarding\Card\Vehicle', $card->getVehicle());
-            $this->assertEquals(Vehicle::TYPE_FLIGHT, $card->getVehicle()->getType());
-            $this->assertEquals($data['additionalInfo']['gate'], $card->getAdditionalInfo('gate'));
-            $this->assertEquals($data['additionalInfo']['note'], $card->getAdditionalInfo('note'));
+            $this->assertEquals($data['to'], $leg->getTo());
+            $this->assertEquals($data['seat'], $leg->getSeat());
+            $this->assertInstanceOf('Boarding\Vehicle\AbstractVehicle', $leg->getVehicle());
+            $this->assertEquals($data['type'], $leg->getVehicle()->getName());
+
+            if (isset($data['additionalInfo'])) {
+                $this->assertEquals($data['additionalInfo']['gate'], $leg->getAdditionalInfo('gate'));
+                $this->assertEquals($data['additionalInfo']['note'], $leg->getAdditionalInfo('note'));
+            }
         }
     }
 }

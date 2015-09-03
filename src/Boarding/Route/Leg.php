@@ -4,6 +4,7 @@ namespace Boarding\Route;
 
 use Boarding\Card;
 use Boarding\Card\Vehicle;
+use Boarding\Vehicle\AbstractVehicle;
 
 /**
  * This is mostly a wrapper on a Card class.
@@ -30,7 +31,7 @@ class Leg
     private $seat;
 
     /**
-     * @var Vehicle
+     * @var AbstractVehicle
      */
     private $vehicle;
 
@@ -48,6 +49,7 @@ class Leg
         $this->to = $card->getTo();
         $this->vehicle = $card->getVehicle();
         $this->additionalInfo = $card->getAllAdditionalInfo();
+        $this->seat = $card->getSeat();
     }
 
     /**
@@ -99,7 +101,7 @@ class Leg
     }
 
     /**
-     * @return Vehicle
+     * @return AbstractVehicle
      */
     public function getVehicle()
     {
@@ -107,7 +109,7 @@ class Leg
     }
 
     /**
-     * @param Vehicle $vehicle
+     * @param AbstractVehicle $vehicle
      */
     public function setVehicle($vehicle)
     {

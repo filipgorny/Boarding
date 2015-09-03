@@ -81,4 +81,13 @@ class Route implements \ArrayAccess
     {
         $this->legs[] = $leg;
     }
+
+    /**
+     * @param $index
+     * @return Leg
+     */
+    public function getLeg($index)
+    {
+        return $this->offsetGet($index);
+    }
 }

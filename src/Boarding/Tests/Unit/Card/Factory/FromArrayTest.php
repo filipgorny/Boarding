@@ -27,6 +27,9 @@ class FromArrayTest extends \PHPUnit_Framework_TestCase
         ];
 
         $vehicleFactoryMock = $this->getMock('Boarding\Vehicle\Factory\VehicleFactoryInterface');
+        $vehicleFactoryMock->expects($this->any())
+            ->method('initialize')
+            ->will($this->returnValue(new Flight('123')));
 
         $fromArrayFactory = new FromArray($vehicleFactoryMock);
 

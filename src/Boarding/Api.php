@@ -52,8 +52,12 @@ class Api
         return $stack;
     }
 
+    /**
+     * @param Stack $stack
+     * @return Route
+     */
     public function findRoute(Stack $stack)
     {
-
+        return $this->pathFindingStrategy->findPath($stack);
     }
 }
