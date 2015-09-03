@@ -11,6 +11,6 @@
     ],
     "require": {},
     "autoload": {
-        "psr-2": {"Boarding\\": "src/Boarding"}
+        "psr-4": {"Boarding\\": "src/Boarding"}
     }
 }
