@@ -4,12 +4,19 @@
 
 This is an example project, written in purpose of code style presentation.
 
-TODO add info what it does
+It should not be used for a commercial purposes, other than an example of an OOP design solution.
+
+This is the solution for following excersise:
+1. Consider you have a randomly ordered cards, telling about city which you starting from, destination,
+seat number, vehicle type and identifier, and the additional info if required.
+2. Prepare an API which will sort the cards and return a list of routes.
+3. Translate the result into human readable content.
 
 ## How to use
 
-Process of getting boarding legs:
-1. Initialize the Api Gateway object.
+Process of getting boarding legs is as follows:
+
+### Initialize the Api Gateway object.
 
 ```php
 
@@ -30,13 +37,13 @@ $api = new Boarding\Api(new FromArray($vehicleFactory), new QuickSortTopological
 
 ```
 
-2. Create the new boarding cards stack instance
+### Create the new boarding cards stack instance
 
 ```php
 $stack = $api->createStack();
 ```
 
-3. Add cards info
+### Add cards info
 
 ```php
 $stack->addNewCard([
@@ -54,8 +61,31 @@ $stack->addNewCard([
 
 This method may throw ```php Boarding\Card\Factory\Exception\InvalidCardInputException ``` when the values array is not valid.
 
-4. Ask API to search for the route.
+### Ask API to search for the route.
 
 ```php
 $route = $api->findRoute($stack);
 ```
+
+### Get route as a text
+
+You can get translated text, ready to use on your website or in the console app, by calling a describeRoute method.
+
+```php
+$routeDescription = $api->describeRoute($route);
+
+echo $routeDescription->getAsFullText();
+
+```
+
+## Testing
+
+This projects uses PHPUnit as a testing framework. Configuration file is provided in the phpunit.xml.
+You may need to just run
+
+```
+phpunit
+```
+
+in the root folder using your unix console.
+

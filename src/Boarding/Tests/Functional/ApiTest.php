@@ -11,8 +11,21 @@ use Boarding\Route\PathFinding\Bubble;
 use Boarding\Route\PathFinding\QuickSortTopological;
 use Boarding\Vehicle\Factory\NamesHashFactory;
 
+/**
+ * This is the functional test for the whole API.
+ *
+ * Api class is a connector for all sub functions in this package.
+ *
+ * Class ApiTest
+ * @package Boarding\Tests\Functional
+ */
 class ApiTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * This are the mock data for cards
+     *
+     * @var array
+     */
     private $cardsArray = [
         'stockholm - new york' => [
             'from' => 'Stockholm',
@@ -79,22 +92,6 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindValidRoute()
     {
-        /*
-            EXPECTED RESULT:
-
-            Take train 78A from Madrid to Barcelona. Sit in seat 45B.
-            Take the airport bus from Barcelona to Gerona Airport. No seat assignment.
-            From Gerona Airport, take flight SK455 to Stockholm. Gate 45B, seat 3A.
-
-            Baggage drop at ticket counter 344.
-
-            From Stockholm, take flight SK22 to New York JFK. Gate 22, seat 7B.
-
-            Baggage will we automatically transferred from your last leg.
-
-            You have arrived at your final destination.
-         */
-
         $vehicleFactory = new NamesHashFactory();
         $vehicleFactory->registerVehicleType('flight', 'Boarding\\Vehicle\\Flight');
         $vehicleFactory->registerVehicleType('train', 'Boarding\\Vehicle\\Train');
