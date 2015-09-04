@@ -6,7 +6,7 @@ This is an example project, written in purpose of code style presentation.
 
 It should not be used for a commercial purposes, other than an example of an OOP design solution.
 
-This is the solution for following excersise:
+This is the solution for a following code exercise:
 * Consider you have a randomly ordered cards, telling about city which you starting from, destination,
 seat number, vehicle type and identifier, and the additional info if required.
 * Prepare an API which will sort the cards and return a list of routes.
@@ -31,6 +31,12 @@ $cardToLegMapper = new BaseCardMapper();
 
 // initialize descriptor dependency (converting route legs objects to strings)
 $descriptor = new BaseDescriptor();
+
+// register description patterns defined in the vehicle classes (they implement a DescriptionPatternInterface interface)
+// note you can also pass an instance of vehicle class
+$baseDescriptor->addDescriptionPattern('Boarding\Vehicle\Train');
+$baseDescriptor->addDescriptionPattern('Boarding\Vehicle\Flight');
+$baseDescriptor->addDescriptionPattern('Boarding\Vehicle\AirportBus');
 
 // initialize the api with factories and sorting strategy
 $api = new Boarding\Api(new FromArray($vehicleFactory), new QuickSortTopological($cardToLegMapper), $descriptor);
@@ -89,3 +95,9 @@ phpunit
 
 in the root folder using your unix console.
 
+## Adding more vehicles
+
+When you want to add a new vehicle, please make another class extending abstract base of Boarding\Vehicle\AbstractVehicle.
+
+It should have an unique name which will be identified in the card's info array. It should also define
+the translation description for route and seat (see the DescriptionPatternInterface).

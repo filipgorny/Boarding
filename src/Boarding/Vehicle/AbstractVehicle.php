@@ -2,11 +2,13 @@
 
 namespace Boarding\Vehicle;
 
+use Boarding\Route\Descripting\DescriptionPatternInterface;
+
 /**
  * Class AbstractVehicle
  * @package Boarding\Vehicle
  */
-abstract class AbstractVehicle
+abstract class AbstractVehicle implements DescriptionPatternInterface
 {
     /**
      * @var string
@@ -40,5 +42,8 @@ abstract class AbstractVehicle
     /**
      * @return string
      */
-    abstract public function getName();
+    public function getName()
+    {
+        return static::getVehicleName();
+    }
 }

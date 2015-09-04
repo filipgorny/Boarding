@@ -11,17 +11,9 @@ use Boarding\Route\Descripting\Exception\UndefinedPatternForVehicleException;
  */
 class BaseDescriptor implements RouteDescriptorInterface
 {
-    private $patters = [
-        'directions' => [
-            'train' => 'Take train %identifier from %from to %to.',
-            'airport bus' => 'Take the airport bus from %from to %to.',
-            'flight' => 'From %from, take flight %identifier to %to.'
-        ],
-        'seat' => [
-            'train' => 'Sit in seat %seat.',
-            'airport bus' => 'Sit in seat %seat.',
-            'flight' => 'Gate %gate, seat %seat.'
-        ]
+    private $patterns = [
+        'directions' => [],
+        'seat' => []
     ];
 
     /**
@@ -50,14 +42,14 @@ class BaseDescriptor implements RouteDescriptorInterface
         foreach ($route->getAllLegs() as $leg) {
             $vehicleName = $leg->getVehicle()->getName();
 
-            if (!isset($this->patters['directions'][$vehicleName]) || !(isset($this->patters['seat'][$vehicleName]))) {
+            if (!isset($this->patterns['directions'][$vehicleName]) || !(isset($this->patterns['seat'][$vehicleName]))) {
                 throw new UndefinedPatternForVehicleException(
                     'Pattern for vehicle not found: '.$vehicleName
                 );
             }
 
-            $directionString = $this->patters['directions'][$vehicleName];
-            $seatString = ($leg->getSeat()) ? $this->patters['seat'][$vehicleName] : 'No seat assignment.';
+            $directionString = $this->patterns['directions'][$vehicleName];
+            $seatString = ($leg->getSeat()) ? $this->patterns['seat'][$vehicleName] : 'No seat assignment.';
 
             $describedLeg = new DescribedLeg();
             $describedLeg->setMainLine(
@@ -97,5 +89,37 @@ class BaseDescriptor implements RouteDescriptorInterface
         }
 
         return $string;
+    }
+
+    /**
+     * Add new description pattern that maps a vehicle type into string for describing location source and destination
+     * and the seat placement.
+     *
+     * @param string|object $definitionSource
+     */
+    public function addDescriptionPattern($definitionSource)
+    {
+        if (is_string($definitionSource)) {
+            if (!(
+            new \ReflectionClass($definitionSource))
+                ->implementsInterface('Boarding\Route\Descripting\DescriptionPatternInterface')
+            ) {
+                throw new \InvalidArgumentException(
+                    'Given class or object is not am implementation of DescriptionPatternInterface (' . $definitionSource . ').'
+                );
+            }
+        } elseif (is_object($definitionSource)) {
+            if (!(
+            new \ReflectionObject($definitionSource))
+                ->implementsInterface('Boarding\Route\Descripting\DescriptionPatternInterface')
+            ) {
+                throw new \InvalidArgumentException(
+                    'Given class or object is not am implementation of DescriptionPatternInterface (' . get_class($definitionSource) . ').'
+                );
+            }
+        }
+
+        $this->patterns['directions'][$definitionSource::getVehicleName()] = $definitionSource::getDirectionPattern();
+        $this->patterns['seat'][$definitionSource::getVehicleName()] = $definitionSource::getSeatPattern();
     }
 }

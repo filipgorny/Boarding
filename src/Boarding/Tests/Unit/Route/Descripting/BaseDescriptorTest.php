@@ -89,6 +89,10 @@ EOT;
         $route->addLeg($leg2);
 
         $baseDescriptor = new BaseDescriptor();
+
+        $baseDescriptor->addDescriptionPattern('Boarding\Vehicle\Train');
+        $baseDescriptor->addDescriptionPattern('Boarding\Vehicle\Flight');
+
         $description = $baseDescriptor->describeRoute($route);
 
         $this->assertEquals($expectedText, $description->getAsFullText());
