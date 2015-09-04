@@ -5,6 +5,7 @@ namespace Boarding\Tests\Functional;
 use Boarding\Api;
 use Boarding\Card\Factory\FromArray;
 use Boarding\Card\Vehicle;
+use Boarding\Route\Leg\BaseCardMapper;
 use Boarding\Route\PathFinding\Bubble;
 use Boarding\Route\PathFinding\QuickSortTopological;
 use Boarding\Vehicle\Factory\NamesHashFactory;
@@ -57,8 +58,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $vehicleFactory->registerVehicleType('train', 'Boarding\\Vehicle\\Train');
         $vehicleFactory->registerVehicleType('airport bus', 'Boarding\\Vehicle\\AirportBus');
 
-        $api = new Api(new FromArray($vehicleFactory), new QuickSortTopological());
+        $cardToLegMapper = new BaseCardMapper();
 
+        $api = new Api(new FromArray($vehicleFactory), new QuickSortTopological($cardToLegMapper));
 
         $stack = $api->createStack($this->cardsArray);
 
@@ -89,7 +91,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $vehicleFactory->registerVehicleType('train', 'Boarding\\Vehicle\\Train');
         $vehicleFactory->registerVehicleType('airport bus', 'Boarding\\Vehicle\\AirportBus');
 
-        $api = new Api(new FromArray($vehicleFactory), new QuickSortTopological());
+        $cardToLegMapper = new BaseCardMapper();
+
+        $api = new Api(new FromArray($vehicleFactory), new QuickSortTopological($cardToLegMapper));
 
         $stack = $api->createStack($this->cardsArray);
 

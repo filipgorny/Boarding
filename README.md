@@ -13,14 +13,17 @@ Process of getting boarding legs:
 
 ```php
 
+
 // configure the factory services
 $vehicleFactory = new NamesHashFactory();
 $vehicleFactory->registerVehicleType('flight', 'Boarding\\Vehicle\\Flight');
 $vehicleFactory->registerVehicleType('train', 'Boarding\\Vehicle\\Train');
 $vehicleFactory->registerVehicleType('airport bus', 'Boarding\\Vehicle\\AirportBus');
 
+$cardToLegMapper = new BaseCardMapper();
+
 // initialize the api with factories and sorting strategy
-$api = new Boarding\Api(new FromArray($vehicleFactory), new QuickSortTopological());
+$api = new Boarding\Api(new FromArray($vehicleFactory), new QuickSortTopological($cardToLegMapper));
 
 ```
 

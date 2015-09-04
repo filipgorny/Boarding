@@ -3,7 +3,6 @@
 namespace Boarding\Tests\Unit\Card\Factory;
 
 use Boarding\Card\Factory\FromArray;
-use Boarding\Card\Vehicle;
 use Boarding\Vehicle\Flight;
 
 /**

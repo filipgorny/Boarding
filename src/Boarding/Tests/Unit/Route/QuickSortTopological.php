@@ -1,8 +1,9 @@
 <?php
 
-namespace Boarding\Tests\Unit\Card\Factory;
+namespace Boarding\Tests\Unit\Route;
 
 use Boarding\Card;
+use Boarding\Route\Leg;
 use Boarding\Route\PathFinding\QuickSortTopological;
 
 /**
@@ -23,7 +24,25 @@ class QuickSortTopologicalTest extends \PHPUnit_Framework_TestCase
         $stack = new Card\Stack();
         $stack->addCards($cards);
 
-        $bubbleLegsSorting = new QuickSortTopological();
+        $cardToLegMapper = $this->getMock('Boarding\Route\Leg\CardMapperInterface')
+            ->expects($this->once())
+            ->method('mapCardToLeg')
+            ->will($this->returnCallback(function(Card $card) {
+                $leg = new Leg();
+
+                $leg->setSeat($card->getSeat());
+                $leg->setTo($card->getTo());
+                $leg->setFrom($card->getFrom());
+                $leg->setVehicle($card->getVehicle());
+
+                foreach ($card->getAllAdditionalInfo() as $k => $v) {
+                    $leg->setAdditionalInfo($k, $v);
+                }
+
+                return $leg;
+            }));
+
+        $bubbleLegsSorting = new QuickSortTopological($cardToLegMapper);
         $route = $bubbleLegsSorting->findPath($stack);
 
         $this->assertEquals('oslo', $route->getStartPlace());

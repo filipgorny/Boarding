@@ -14,6 +14,19 @@ use Boarding\Route\Leg;
 class QuickSortTopological implements PathFindingStrategyInterface
 {
     /**
+     * @var Leg\CardMapperInterface
+     */
+    private $cardToLegMapper;
+
+    /**
+     * @param Leg\CardMapperInterface $cardToLegMapper
+     */
+    public function __construct(Leg\CardMapperInterface $cardToLegMapper)
+    {
+        $this->cardToLegMapper = $cardToLegMapper;
+    }
+
+    /**
      * @param Stack $stack
      * @return Route
      */
@@ -24,7 +37,7 @@ class QuickSortTopological implements PathFindingStrategyInterface
         $route = new Route();
 
         foreach ($cards as $card) {
-            $route->addLeg(new Leg($card));
+            $route->addLeg($this->cardToLegMapper->mapCardToLeg($card));
         }
 
         return $route;

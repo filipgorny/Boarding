@@ -3,7 +3,6 @@
 namespace Boarding\Route;
 
 use Boarding\Card;
-use Boarding\Card\Vehicle;
 use Boarding\Vehicle\AbstractVehicle;
 
 /**
@@ -39,18 +38,6 @@ class Leg
      * @var string[]
      */
     private $additionalInfo = [];
-
-    /**
-     * @param Card $card
-     */
-    public function __construct(Card $card)
-    {
-        $this->from = $card->getFrom();
-        $this->to = $card->getTo();
-        $this->vehicle = $card->getVehicle();
-        $this->additionalInfo = $card->getAllAdditionalInfo();
-        $this->seat = $card->getSeat();
-    }
 
     /**
      * @return string
