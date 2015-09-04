@@ -7,10 +7,10 @@ This is an example project, written in purpose of code style presentation.
 It should not be used for a commercial purposes, other than an example of an OOP design solution.
 
 This is the solution for following excersise:
-1. Consider you have a randomly ordered cards, telling about city which you starting from, destination,
+* Consider you have a randomly ordered cards, telling about city which you starting from, destination,
 seat number, vehicle type and identifier, and the additional info if required.
-2. Prepare an API which will sort the cards and return a list of routes.
-3. Translate the result into human readable content.
+* Prepare an API which will sort the cards and return a list of routes.
+* Translate the result into human readable content.
 
 ## How to use
 
