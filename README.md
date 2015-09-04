@@ -91,7 +91,7 @@ echo $routeDescription->getAsFullText();
 
 ```
 
-#### Testing
+### Testing
 
 This projects uses PHPUnit as a testing framework. Configuration file is provided in the ```phpunit.xml```.
 You may need to just run
@@ -102,7 +102,7 @@ phpunit
 
 in the root folder using your unix console.
 
-#### Adding more vehicles
+### Adding more vehicles
 
 When you want to add a new vehicle, please make another class extending abstract base of ```Boarding\Vehicle\AbstractVehicle```.
 
