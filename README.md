@@ -14,9 +14,17 @@ seat number, vehicle type and identifier, and the additional info if required.
 
 ## How to use
 
-Process of getting boarding legs is as follows:
+### Installation
 
-### Initialize the Api Gateway object.
+This is an PSR-4 composer based project. Please run
+
+```composer install```
+
+to initialize all required dependencies.
+
+### Process of getting boarding legs is as follows:
+
+#### Initialize the Api Gateway object.
 
 ```php
 
@@ -42,13 +50,13 @@ $api = new Boarding\Api(new FromArray($vehicleFactory), new QuickSortTopological
 
 ```
 
-### Create the new boarding cards stack instance
+#### Create the new boarding cards stack instance
 
 ```php
 $stack = $api->createStack();
 ```
 
-### Add cards info
+#### Add cards info
 
 ```php
 $stack->addNewCard([
@@ -66,13 +74,13 @@ $stack->addNewCard([
 
 This method may throw ```php Boarding\Card\Factory\Exception\InvalidCardInputException ``` when the values array is not valid.
 
-### Ask API to search for the route.
+#### Ask API to search for the route.
 
 ```php
 $route = $api->findRoute($stack);
 ```
 
-### Get route as a text
+#### Get route as a text
 
 You can get translated text, ready to use on your website or in the console app, by calling a ```describeRoute``` method.
 
@@ -83,7 +91,7 @@ echo $routeDescription->getAsFullText();
 
 ```
 
-## Testing
+#### Testing
 
 This projects uses PHPUnit as a testing framework. Configuration file is provided in the ```phpunit.xml```.
 You may need to just run
@@ -94,7 +102,7 @@ phpunit
 
 in the root folder using your unix console.
 
-## Adding more vehicles
+#### Adding more vehicles
 
 When you want to add a new vehicle, please make another class extending abstract base of ```Boarding\Vehicle\AbstractVehicle```.
 
