@@ -11,7 +11,7 @@ use Boarding\Vehicle\AbstractVehicle;
 class NamesHashFactory implements VehicleFactoryInterface
 {
     /**
-     * @var string
+     * @var string[]
      */
     private $knownTypes;
 
@@ -38,5 +38,13 @@ class NamesHashFactory implements VehicleFactoryInterface
         $vehicle = new $this->knownTypes[$name]($identifier);
 
         return $vehicle;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRegisteredVehicles()
+    {
+        return $this->knownTypes;
     }
 }

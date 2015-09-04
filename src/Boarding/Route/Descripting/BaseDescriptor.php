@@ -122,4 +122,14 @@ class BaseDescriptor implements RouteDescriptorInterface
         $this->patterns['directions'][$definitionSource::getVehicleName()] = $definitionSource::getDirectionPattern();
         $this->patterns['seat'][$definitionSource::getVehicleName()] = $definitionSource::getSeatPattern();
     }
+
+    /**
+     * @param array $definitionSources
+     */
+    public function addDescriptionPatterns($definitionSources)
+    {
+        foreach ($definitionSources as $definitionSource) {
+            $this->addDescriptionPattern($definitionSource);
+        }
+    }
 }

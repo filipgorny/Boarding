@@ -164,7 +164,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $stack = $api->createStack([$this->cardsArray['madrid - barcelona']]);
         $route = $api->findRoute($stack);
 
-        $descriptor->addDescriptionPattern('Boarding\\Vehicle\\Train');
+        $descriptor->addDescriptionPatterns($vehicleFactory->getRegisteredVehicles());
 
         $this->assertEquals(
             'Take train 78A from Madrid to Barcelona. Sit in seat 45B.',

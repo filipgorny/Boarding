@@ -32,11 +32,10 @@ $cardToLegMapper = new BaseCardMapper();
 // initialize descriptor dependency (converting route legs objects to strings)
 $descriptor = new BaseDescriptor();
 
-// register description patterns defined in the vehicle classes (they implement a DescriptionPatternInterface interface)
+// register description patterns defined in the vehicle classes (they implement a ```DescriptionPatternInterface``` interface)
 // note you can also pass an instance of vehicle class
-$baseDescriptor->addDescriptionPattern('Boarding\Vehicle\Train');
-$baseDescriptor->addDescriptionPattern('Boarding\Vehicle\Flight');
-$baseDescriptor->addDescriptionPattern('Boarding\Vehicle\AirportBus');
+// or as in this example you can use a bulk method passing all registered vehicle types from the ```VehicleFactoryInterface``` instance
+$baseDescriptor->addDescriptionPatterns($vehicleFactory->getRegisteredVehicles());
 
 // initialize the api with factories and sorting strategy
 $api = new Boarding\Api(new FromArray($vehicleFactory), new QuickSortTopological($cardToLegMapper), $descriptor);
@@ -75,7 +74,7 @@ $route = $api->findRoute($stack);
 
 ### Get route as a text
 
-You can get translated text, ready to use on your website or in the console app, by calling a describeRoute method.
+You can get translated text, ready to use on your website or in the console app, by calling a ```describeRoute``` method.
 
 ```php
 $routeDescription = $api->describeRoute($route);
@@ -86,7 +85,7 @@ echo $routeDescription->getAsFullText();
 
 ## Testing
 
-This projects uses PHPUnit as a testing framework. Configuration file is provided in the phpunit.xml.
+This projects uses PHPUnit as a testing framework. Configuration file is provided in the ```phpunit.xml```.
 You may need to just run
 
 ```
@@ -97,7 +96,7 @@ in the root folder using your unix console.
 
 ## Adding more vehicles
 
-When you want to add a new vehicle, please make another class extending abstract base of Boarding\Vehicle\AbstractVehicle.
+When you want to add a new vehicle, please make another class extending abstract base of ```Boarding\Vehicle\AbstractVehicle```.
 
 It should have an unique name which will be identified in the card's info array. It should also define
-the translation description for route and seat (see the DescriptionPatternInterface).
+the translation description for route and seat (see the ```DescriptionPatternInterface```).

@@ -16,4 +16,9 @@ interface VehicleFactoryInterface
      * @return AbstractVehicle
      */
     public function initialize($name, $identifier = null);
+
+    /**
+     * @return string[]
+     */
+    public function getRegisteredVehicles();
 }
