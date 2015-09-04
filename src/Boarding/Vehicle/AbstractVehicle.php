@@ -16,7 +16,7 @@ abstract class AbstractVehicle
     /**
      * @param string $identifier
      */
-    public function __construct($identifier)
+    public function __construct($identifier = null)
     {
         $this->identifier = $identifier;
     }
@@ -27,6 +27,14 @@ abstract class AbstractVehicle
     public function getIdentifier()
     {
         return $this->identifier;
+    }
+
+    /**
+     * @param $identifier
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
     }
 
     /**

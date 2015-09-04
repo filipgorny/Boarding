@@ -104,11 +104,12 @@ class Leg
     }
 
     /**
-     * @return \string[]
+     * @param $name
+     * @return null|string
      */
     public function getAdditionalInfo($name)
     {
-        return $this->additionalInfo[$name];
+        return isset($this->additionalInfo[$name]) ? $this->additionalInfo[$name] : null;
     }
 
     /**

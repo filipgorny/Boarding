@@ -4,6 +4,8 @@ namespace Boarding;
 
 use Boarding\Card\Factory\CardFactoryInterface;
 use Boarding\Card\Stack;
+use Boarding\Route\Descripting\RouteDescription;
+use Boarding\Route\Descripting\RouteDescriptorInterface;
 use Boarding\Route\PathFinding\PathFindingStrategyInterface;
 use Boarding\Vehicle\Factory\VehicleFactoryInterface;
 
@@ -24,15 +26,23 @@ class Api
     private $pathFindingStrategy;
 
     /**
+     * @var RouteDescriptorInterface
+     */
+    private $descriptor;
+
+    /**
      * @param CardFactoryInterface $cardFactory
      * @param PathFindingStrategyInterface $pathFindingStrategy
+     * @param RouteDescriptorInterface $routeDescriptor
      */
     public function __construct(
         CardFactoryInterface $cardFactory,
-        PathFindingStrategyInterface $pathFindingStrategy
+        PathFindingStrategyInterface $pathFindingStrategy,
+        RouteDescriptorInterface $routeDescriptor
     ) {
         $this->cardFactory = $cardFactory;
         $this->pathFindingStrategy = $pathFindingStrategy;
+        $this->descriptor = $routeDescriptor;
     }
 
     /**
@@ -59,5 +69,14 @@ class Api
     public function findRoute(Stack $stack)
     {
         return $this->pathFindingStrategy->findPath($stack);
+    }
+
+    /**
+     * @param Route $route
+     * @return RouteDescription
+     */
+    public function describeRoute(Route $route)
+    {
+        return $this->descriptor->describeRoute($route);
     }
 }

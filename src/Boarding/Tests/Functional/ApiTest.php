@@ -5,6 +5,7 @@ namespace Boarding\Tests\Functional;
 use Boarding\Api;
 use Boarding\Card\Factory\FromArray;
 use Boarding\Card\Vehicle;
+use Boarding\Route\Descripting\BaseDescriptor;
 use Boarding\Route\Leg\BaseCardMapper;
 use Boarding\Route\PathFinding\Bubble;
 use Boarding\Route\PathFinding\QuickSortTopological;
@@ -51,6 +52,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         ],
     ];
 
+    /**
+     * The api should create a valid stack of cards
+     */
     public function testCreatesValidStack()
     {
         $vehicleFactory = new NamesHashFactory();
@@ -60,7 +64,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $cardToLegMapper = new BaseCardMapper();
 
-        $api = new Api(new FromArray($vehicleFactory), new QuickSortTopological($cardToLegMapper));
+        $descriptor = new BaseDescriptor();
+
+        $api = new Api(new FromArray($vehicleFactory), new QuickSortTopological($cardToLegMapper), $descriptor);
 
         $stack = $api->createStack($this->cardsArray);
 
@@ -68,6 +74,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(4, $stack->getLength());
     }
 
+    /**
+     * The api should be able to return sorted route
+     */
     public function testFindValidRoute()
     {
         /*
@@ -93,7 +102,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $cardToLegMapper = new BaseCardMapper();
 
-        $api = new Api(new FromArray($vehicleFactory), new QuickSortTopological($cardToLegMapper));
+        $descriptor = new BaseDescriptor();
+
+        $api = new Api(new FromArray($vehicleFactory), new QuickSortTopological($cardToLegMapper), $descriptor);
 
         $stack = $api->createStack($this->cardsArray);
 
@@ -137,5 +148,28 @@ class ApiTest extends \PHPUnit_Framework_TestCase
                 $this->assertEquals($data['additionalInfo']['note'], $leg->getAdditionalInfo('note'));
             }
         }
+    }
+
+    /**
+     * The api should be able to produce text from input
+     */
+    public function testDescribesRoute()
+    {
+        $descriptor = new BaseDescriptor();
+
+        $vehicleFactory = new NamesHashFactory();
+        $vehicleFactory->registerVehicleType('train', 'Boarding\\Vehicle\\Train');
+
+        $cardToLegMapper = new BaseCardMapper();
+
+        $api = new Api(new FromArray($vehicleFactory), new QuickSortTopological($cardToLegMapper), $descriptor);
+
+        $stack = $api->createStack([$this->cardsArray['madrid - barcelona']]);
+        $route = $api->findRoute($stack);
+
+        $this->assertEquals(
+            'Take train 78A from Madrid to Barcelona. Sit in seat 45B.',
+            $api->describeRoute($route)->getAsFullText()
+        );
     }
 }
